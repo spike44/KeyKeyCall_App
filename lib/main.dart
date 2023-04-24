@@ -3,18 +3,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:keykeycall_app/screen/auth_screen.dart';
-import 'package:keykeycall_app/screen/home_screen.dart';
+import 'package:keykeycall_app/screen/main_screen.dart';
 import 'package:keykeycall_app/screen/splash_screen.dart';
+import 'package:keykeycall_app/state/bottomNaviagation_state.dart';
 import 'package:keykeycall_app/utils/logger.dart';
 
-final bottomNavigationProvider = StateProvider((ref) => 0);
+final bottomNavigationProvider = StateNotifierProvider<BottomNavigationState, int>((ref) => BottomNavigationState());
 
 final GoRouter _router = GoRouter(
     routes: <RouteBase>[
       GoRoute(
         path: '/',
         builder: (BuildContext context, GoRouterState state) {
-          return const HomeScreen();
+          return const MainScreen();
         },
       ),
       GoRoute(
