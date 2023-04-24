@@ -1,0 +1,29 @@
+name: keykeycall_app
+description: keykeycall app
+publish_to: 'none'
+version: 1.0.0+1
+environment:
+  sdk: '>=2.19.6 <3.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  flutter_native_splash:
+  flutter_svg:
+  intl:
+  provider:
+  dio:
+  logger:
+  flutter_screenutil:
+  modal_bottom_sheet:
+  go_router:
+  extended_image:
+  flutter_riverpod:
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
