@@ -39,11 +39,11 @@ class MainScreenState extends ConsumerState<MainScreen> {
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.fire_truck),
+            icon: Icon(Icons.local_shipping),
             label: '화물등록',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
+            icon: Icon(Icons.help_center),
             label: '고객센터',
           ),
           BottomNavigationBarItem(
