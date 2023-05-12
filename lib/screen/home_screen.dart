@@ -18,7 +18,8 @@ class HomeScreen extends ConsumerWidget {
         title: Text('홈'),
       ),
       backgroundColor: Colors.white,
-      body: SafeArea(
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -71,6 +72,7 @@ class HomeScreen extends ConsumerWidget {
             ),
             InkWell(
               onTap: () {
+                context.goNamed('registCargo');
                 ref.read(bottomNavigationProvider.notifier).state = 1;
               },
               child: Container(
@@ -121,7 +123,8 @@ class HomeScreen extends ConsumerWidget {
             ),
             InkWell(
               onTap: () {
-
+                context.pushNamed('registList');
+                ref.read(bottomNavigationProvider.notifier).state = 3;
               },
               child: Container(
                 width: 280.w,
@@ -163,6 +166,50 @@ class HomeScreen extends ConsumerWidget {
             ),
             InkWell(
               onTap: () {
+                ref.read(bottomNavigationProvider.notifier).state = 2;
+                context.pushNamed('orderList');
+              },
+              child: Container(
+                width: 280.w,
+                height: 100.h,
+                alignment: Alignment.center,
+                margin: EdgeInsets.fromLTRB(0, 10.h, 0, 10.h),
+
+                decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.circular(10.r)
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.table_chart_outlined,
+                      size: 95.sp,
+                    ),
+                    Container(
+                      width: 20.w,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '오더현황',
+                          style: TextStyle(
+                              fontSize: 28.sp,
+                              fontFamily: "NotoSansKR",
+                              fontWeight: FontWeight.w700
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                context.goNamed('customerCenter');
                 ref.read(bottomNavigationProvider.notifier).state = 2;
               },
               child: Container(

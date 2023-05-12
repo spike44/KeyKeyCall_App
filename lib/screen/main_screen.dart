@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:keykeycall_app/main.dart';
 import 'package:keykeycall_app/screen/registCargo_screen.dart';
 
@@ -8,8 +9,8 @@ import 'home_screen.dart';
 import 'myPage_screen.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
-
+  const MainScreen({Key? key, required this.child}) : super(key: key);
+  final Widget child;
   @override
   MainScreenState createState() => MainScreenState();
 }
@@ -25,12 +26,7 @@ class MainScreenState extends ConsumerState<MainScreen> {
     final selectedIndex = ref.watch(bottomNavigationProvider);
     return Scaffold(
       body: SafeArea(
-        child: [
-          HomeScreen(),
-          RegistCargoScreen(),
-          CustomerCenterScreen(),
-          MyPageScreen(),
-        ][selectedIndex]
+        child: widget.child,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -54,6 +50,18 @@ class MainScreenState extends ConsumerState<MainScreen> {
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
         onTap: (index) {
+          if(index == 0) {
+            context.goNamed('home');
+          }
+          else if(index == 1) {
+            context.goNamed('registCargo');
+          }
+          else if(index == 2) {
+            context.goNamed('customerCenter');
+          }
+          else if(index == 3) {
+            context.goNamed('myPage');
+          }
           ref.read(bottomNavigationProvider.notifier).state = index;
         },
       ),
