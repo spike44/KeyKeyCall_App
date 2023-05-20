@@ -20,6 +20,7 @@ dependencies:
   extended_image:
   flutter_riverpod:
   riverpod_annotation:
+  flutter_localization:
 dev_dependencies:
   flutter_test:
     sdk: flutter

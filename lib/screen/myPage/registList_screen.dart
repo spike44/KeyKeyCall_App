@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:keykeycall_app/model/search_model.dart';
+import '../../main.dart';
 class RegistListScreen extends ConsumerWidget {
   const RegistListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    bool? _isCheckAll = false;
-    bool? _isCheckSubmit = false;
-    bool? _isCheckComplete = false;
-    bool? _isCheckCancel = false;
-    bool? _isCheckAllMoney = false;
-    bool? _isCheckCard = false;
-    bool? _isCheckPaper = false;
-    bool? _isCheckPrepaid = false;
-
+    final param = ref.watch(searchProvider);
+    String initialDt = DateFormat('yyyy-MM-dd').format(DateTime.now());
     return Scaffold(
       appBar: AppBar(
-        title: Text('화물등록내역'),
+        title: const Text('화물등록내역'),
       ),
       backgroundColor: Colors.white,
       body: Column(
@@ -38,39 +34,169 @@ class RegistListScreen extends ConsumerWidget {
                       margin: EdgeInsets.fromLTRB(10.w, 5.h, 5.h, 5.w),
                       width: 120.w,
                       height: 30.h,
-                      child: TextField(
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.datetime,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(5.sp),
-                          hintText: '2023-05-01',
-                          border: OutlineInputBorder()
+                      child: ElevatedButton(
+                        onPressed: () async{
+                          final selectedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(3000),
+                            initialEntryMode: DatePickerEntryMode.calendarOnly,
+                            locale: const Locale('ko','KR')
+                          );
+                          if(selectedDate != null) {
+                            ref.read(searchProvider.notifier).setParameter(DateFormat('yyyy-MM-dd').format(selectedDate)
+                                , param?.toDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                , param?.isCheckedAll ?? true
+                                , param?.isCheckSubmit ?? false
+                                , param?.isCheckComplete ?? false
+                                , param?.isCheckCancel ?? false
+                                , param?.status ?? 'st001'
+                                , param?.isCheckAllMoney ?? true
+                                , param?.isCheckCard ?? false
+                                , param?.isCheckPaper ?? false
+                                , param?.isCheckPrepaid ?? false
+                                , param?.paymentMethod ?? 'pa001'
+                                , param?.searchText ?? ''
+                            );
+                          }
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(Colors.white),
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                              side: const BorderSide(
+                                color: Colors.black
+                              )
+                            )
+                          )
                         ),
-                      ),
+                        child: Text(
+                          param?.fromDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now()),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: "NotoSansKR",
+                            fontSize: 14.sp
+                          ),
+                        ),
+
+                      )
                     ),
                     InkWell(
-                      onTap: () {},
-                      child: Icon(
+                      onTap: () async{
+                        final selectedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(3000),
+                            initialEntryMode: DatePickerEntryMode.calendarOnly,
+                            locale: const Locale('ko','KR')
+                        );
+                        if(selectedDate != null) {
+                          ref.read(searchProvider.notifier).setParameter(DateFormat('yyyy-MM-dd').format(selectedDate)
+                              , param?.toDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                              , param?.isCheckedAll ?? true
+                              , param?.isCheckSubmit ?? false
+                              , param?.isCheckComplete ?? false
+                              , param?.isCheckCancel ?? false
+                              , param?.status ?? 'st001'
+                              , param?.isCheckAllMoney ?? true
+                              , param?.isCheckCard ?? false
+                              , param?.isCheckPaper ?? false
+                              , param?.isCheckPrepaid ?? false
+                              , param?.paymentMethod ?? 'pa001'
+                              , param?.searchText ?? ''
+                          );
+                        }
+                      },
+                      child: const Icon(
                         Icons.calendar_month
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.fromLTRB(10.w, 5.h, 5.h, 5.w),
-                      width: 120.w,
-                      height: 30.h,
-                      child: TextField(
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.datetime,
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(5.sp),
-                            hintText: '2023-05-01',
-                            border: OutlineInputBorder()
-                        ),
-                      ),
+                        margin: EdgeInsets.fromLTRB(10.w, 5.h, 5.h, 5.w),
+                        width: 120.w,
+                        height: 30.h,
+                        child: ElevatedButton(
+                          onPressed: () async{
+                            final selectedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(3000),
+                                initialEntryMode: DatePickerEntryMode.calendarOnly,
+                                locale: const Locale('ko','KR')
+                            );
+                            if(selectedDate != null) {
+                              ref.read(searchProvider.notifier).setParameter(
+                                  param?.fromDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                  , DateFormat('yyyy-MM-dd').format(selectedDate)
+                                  , param?.isCheckedAll ?? true
+                                  , param?.isCheckSubmit ?? false
+                                  , param?.isCheckComplete ?? false
+                                  , param?.isCheckCancel ?? false
+                                  , param?.status ?? 'st001'
+                                  , param?.isCheckAllMoney ?? true
+                                  , param?.isCheckCard ?? false
+                                  , param?.isCheckPaper ?? false
+                                  , param?.isCheckPrepaid ?? false
+                                  , param?.paymentMethod ?? 'pa001'
+                                  , param?.searchText ?? ''
+                              );
+                            }
+                          },
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.white),
+                              shape: MaterialStateProperty.all<OutlinedBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                                      side: const BorderSide(
+                                          color: Colors.black
+                                      )
+                                  )
+                              )
+                          ),
+                          child: Text(
+                            param?.toDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now()),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: "NotoSansKR",
+                                fontSize: 14.sp
+                            ),
+                          ),
+
+                        )
                     ),
                     InkWell(
-                      onTap: () {},
-                      child: Icon(
+                      onTap: () async{
+                        final selectedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(3000),
+                            initialEntryMode: DatePickerEntryMode.calendarOnly,
+                            locale: const Locale('ko','KR')
+                        );
+                        if(selectedDate != null) {
+                          ref.read(searchProvider.notifier).setParameter(
+                              param?.fromDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                              , DateFormat('yyyy-MM-dd').format(selectedDate)
+                              , param?.isCheckedAll ?? true
+                              , param?.isCheckSubmit ?? false
+                              , param?.isCheckComplete ?? false
+                              , param?.isCheckCancel ?? false
+                              , param?.status ?? 'st001'
+                              , param?.isCheckAllMoney ?? true
+                              , param?.isCheckCard ?? false
+                              , param?.isCheckPaper ?? false
+                              , param?.isCheckPrepaid ?? false
+                              , param?.paymentMethod ?? 'pa001'
+                              , param?.searchText ?? ''
+                          );
+                        }
+                      },
+                      child: const Icon(
                           Icons.calendar_month
                       ),
                     ),
@@ -80,72 +206,184 @@ class RegistListScreen extends ConsumerWidget {
                   children: [
                     Checkbox(
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      value: _isCheckAll,
+                      value: param?.isCheckedAll ?? true,
                       onChanged: (value) {
-                        _isCheckAll = value;
+                        ref.read(searchProvider.notifier).setParameter(
+                            param?.fromDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , param?.toDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , true
+                            , false
+                            , false
+                            , false
+                            , param?.status ?? 'st001'
+                            , param?.isCheckAllMoney ?? true
+                            , param?.isCheckCard ?? false
+                            , param?.isCheckPaper ?? false
+                            , param?.isCheckPrepaid ?? false
+                            , param?.paymentMethod ?? 'pa001'
+                            , param?.searchText ?? ''
+                        );
                       },
                     ),
-                    Text('전체'),
+                    const Text('전체'),
                     Checkbox(
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      value: _isCheckSubmit,
+                      value: param?.isCheckSubmit ?? false,
                       onChanged: (value) {
-                        _isCheckSubmit = value;
+                        ref.read(searchProvider.notifier).setParameter(
+                            param?.fromDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , param?.toDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , false
+                            , true
+                            , false
+                            , false
+                            , param?.status ?? 'st002'
+                            , param?.isCheckAllMoney ?? true
+                            , param?.isCheckCard ?? false
+                            , param?.isCheckPaper ?? false
+                            , param?.isCheckPrepaid ?? false
+                            , param?.paymentMethod ?? 'pa001'
+                            , param?.searchText ?? ''
+                        );
                       },
                     ),
-                    Text('접수'),
+                    const Text('접수'),
                     Checkbox(
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      value: _isCheckComplete,
+                      value: param?.isCheckComplete ?? false,
                       onChanged: (value) {
-                        _isCheckSubmit = value;
+                        ref.read(searchProvider.notifier).setParameter(
+                            param?.fromDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , param?.toDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , false
+                            , false
+                            , true
+                            , false
+                            , param?.status ?? 'st003'
+                            , param?.isCheckAllMoney ?? true
+                            , param?.isCheckCard ?? false
+                            , param?.isCheckPaper ?? false
+                            , param?.isCheckPrepaid ?? false
+                            , param?.paymentMethod ?? 'pa001'
+                            , param?.searchText ?? ''
+                        );
                       },
                     ),
-                    Text('배차완료'),
+                    const Text('배차완료'),
                     Checkbox(
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      value: _isCheckCancel,
+                      value: param?.isCheckCancel ?? false,
                       onChanged: (value) {
-                        _isCheckSubmit = value;
+                        ref.read(searchProvider.notifier).setParameter(
+                            param?.fromDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , param?.toDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , false
+                            , false
+                            , false
+                            , true
+                            , param?.status ?? 'st004'
+                            , param?.isCheckAllMoney ?? true
+                            , param?.isCheckCard ?? false
+                            , param?.isCheckPaper ?? false
+                            , param?.isCheckPrepaid ?? false
+                            , param?.paymentMethod ?? 'pa001'
+                            , param?.searchText ?? ''
+                        );
                       },
                     ),
-                    Text('화물취소'),
+                    const Text('화물취소'),
                   ],
                 ),
                 Row(
                   children: [
                     Checkbox(
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      value: _isCheckAll,
+                      value: param?.isCheckAllMoney ?? true,
                       onChanged: (value) {
-                        _isCheckAll = value;
+                        ref.read(searchProvider.notifier).setParameter(
+                            param?.fromDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , param?.toDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , param?.isCheckedAll ?? true
+                            , param?.isCheckSubmit ?? false
+                            , param?.isCheckComplete ?? false
+                            , param?.isCheckCancel ?? false
+                            , param?.status ?? 'st001'
+                            , true
+                            , false
+                            , false
+                            , false
+                            , param?.paymentMethod ?? 'pa001'
+                            , param?.searchText ?? ''
+                        );
                       },
                     ),
-                    Text('전체'),
+                    const Text('전체'),
                     Checkbox(
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      value: _isCheckSubmit,
+                      value: param?.isCheckCard ?? false,
                       onChanged: (value) {
-                        _isCheckSubmit = value;
+                        ref.read(searchProvider.notifier).setParameter(
+                            param?.fromDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , param?.toDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , param?.isCheckedAll ?? true
+                            , param?.isCheckSubmit ?? false
+                            , param?.isCheckComplete ?? false
+                            , param?.isCheckCancel ?? false
+                            , param?.status ?? 'st001'
+                            , false
+                            , true
+                            , false
+                            , false
+                            , param?.paymentMethod ?? 'pa002'
+                            , param?.searchText ?? ''
+                        );
                       },
                     ),
-                    Text('카드'),
+                    const Text('카드'),
                     Checkbox(
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      value: _isCheckComplete,
+                      value: param?.isCheckPaper ?? false,
                       onChanged: (value) {
-                        _isCheckSubmit = value;
+                        ref.read(searchProvider.notifier).setParameter(
+                            param?.fromDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , param?.toDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , param?.isCheckedAll ?? true
+                            , param?.isCheckSubmit ?? false
+                            , param?.isCheckComplete ?? false
+                            , param?.isCheckCancel ?? false
+                            , param?.status ?? 'st001'
+                            , false
+                            , false
+                            , true
+                            , false
+                            , param?.paymentMethod ?? 'pa003'
+                            , param?.searchText ?? ''
+                        );
                       },
                     ),
-                    Text('인수증'),
+                    const Text('인수증'),
                     Checkbox(
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      value: _isCheckCancel,
+                      value: param?.isCheckPrepaid ?? false,
                       onChanged: (value) {
-                        _isCheckSubmit = value;
+                        ref.read(searchProvider.notifier).setParameter(
+                            param?.fromDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , param?.toDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , param?.isCheckedAll ?? true
+                            , param?.isCheckSubmit ?? false
+                            , param?.isCheckComplete ?? false
+                            , param?.isCheckCancel ?? false
+                            , param?.status ?? 'st001'
+                            , false
+                            , false
+                            , false
+                            , true
+                            , param?.paymentMethod ?? 'pa004'
+                            , param?.searchText ?? ''
+                        );
                       },
                     ),
-                    Text('선/착불'),
+                    const Text('선/착불'),
                   ],
                 ),
                 Row(
@@ -156,25 +394,58 @@ class RegistListScreen extends ConsumerWidget {
                       width: 210.w,
                       height: 30.h,
                       child: TextField(
+                        onChanged: (value) {
+                          ref.read(searchProvider.notifier).setParameter(
+                              param?.fromDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                              , param?.toDt ?? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                              , param?.isCheckedAll ?? true
+                              , param?.isCheckSubmit ?? false
+                              , param?.isCheckComplete ?? false
+                              , param?.isCheckCancel ?? false
+                              , param?.status ?? 'st001'
+                              , param?.isCheckAllMoney ?? true
+                              , param?.isCheckCard ?? false
+                              , param?.isCheckPaper ?? false
+                              , param?.isCheckPrepaid ?? false
+                              , param?.paymentMethod ?? 'pa001'
+                              , value
+                          );
+                        },
                         textAlign: TextAlign.center,
-                        keyboardType: TextInputType.datetime,
+                        keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(5.sp),
                             hintText: '검색어를 입력하세요(화물번호,차주전화번호)',
-                            border: OutlineInputBorder()
+                            border: const OutlineInputBorder()
                         ),
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
-                      child: Text('지우기')
+                      onPressed: () {
+                        ref.read(searchProvider.notifier).setParameter(
+                            DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , DateFormat('yyyy-MM-dd').format(DateTime.now())
+                            , true
+                            , false
+                            , false
+                            , false
+                            , param?.status ?? 'st001'
+                            , true
+                            , false
+                            , false
+                            , false
+                            , 'pa001'
+                            , ''
+                        );
+                      },
+                      child: const Text('지우기')
                     ),
                     Container(
                       width: 5.w,
                     ),
                     ElevatedButton(
                         onPressed: () {},
-                        child: Text('검색')
+                        child: const Text('검색')
                     ),
                   ]
                 ),
@@ -199,36 +470,36 @@ class RegistListScreen extends ConsumerWidget {
                     children: [
                       Row(
                         children: [
-                          Text('경기 여주 가남읍 본두리'),
+                          const Text('경기 여주 가남읍 본두리'),
                           Container(
                             width: 30.w,
                           ),
-                          Text('당상'),
+                          const Text('당상'),
                           Container(
                             width: 5.w,
                           ),
-                          Text('수')
+                          const Text('수')
                         ],
                       ),
                       Row(
                         children: [
-                          Text('서울 마포 망원동'),
+                          const Text('서울 마포 망원동'),
                           Container(
                             width: 71.w,
                           ),
-                          Text('당착'),
+                          const Text('당착'),
                           Container(
                             width: 5.w,
                           ),
-                          Text('수')
+                          const Text('수')
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('40,000원'),
+                          const Text('40,000원'),
                           Column(
-                            children: [
+                            children: const [
                               Text('04-21 16:28'),
                               Text('배차완료')
                             ],
@@ -236,7 +507,7 @@ class RegistListScreen extends ConsumerWidget {
                         ],
                       ),
                       Row(
-                        children: [
+                        children: const [
                           Text('혼적'),
                           Text('선/착불 운 4.0 + 수 0.0'),
                           Text('/'),

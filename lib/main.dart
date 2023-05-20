@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:keykeycall_app/model/regist_model.dart';
+import 'package:keykeycall_app/model/search_model.dart';
 import 'package:keykeycall_app/model/user_model.dart';
 import 'package:keykeycall_app/screen/auth_screen.dart';
 import 'package:keykeycall_app/screen/customerCenter/centerCall_screen.dart';
@@ -26,13 +29,17 @@ import 'package:keykeycall_app/screen/customerCenter/orderList_screen.dart';
 import 'package:keykeycall_app/screen/registCargo_screen.dart';
 import 'package:keykeycall_app/screen/myPage/registList_screen.dart';
 import 'package:keykeycall_app/screen/splash_screen.dart';
-import 'package:keykeycall_app/state/bottomNaviagation_state.dart';
+import 'package:keykeycall_app/state/bottomNavigation_state.dart';
+import 'package:keykeycall_app/state/regist_state.dart';
+import 'package:keykeycall_app/state/search_state.dart';
 import 'package:keykeycall_app/state/user_state.dart';
 import 'package:keykeycall_app/utils/logger.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 final bottomNavigationProvider = StateNotifierProvider<BottomNavigationState, int>((ref) => BottomNavigationState());
 final userProvider = StateNotifierProvider<UserStateNotifier, USerModel?>((ref) => UserStateNotifier());
+final searchProvider = StateNotifierProvider<SearchStateNotifier, SearchModel?>((ref) => SearchStateNotifier());
+final registProvider = StateNotifierProvider<RegistStateNotifier, RegistModel?>((ref) => RegistStateNotifier());
 final goRouterProvider = Provider<GoRouter>((ref) {
   final user = ref.watch(userProvider);
   return GoRouter(
@@ -283,6 +290,11 @@ class KeyKeyCallApp extends ConsumerWidget {
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
+      ],
     );
   }
 }
