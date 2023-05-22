@@ -1,16 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:keykeycall_app/model/search_model.dart';
 import '../../main.dart';
+import '../../model/registList_model.dart';
 class RegistListScreen extends ConsumerWidget {
   const RegistListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final param = ref.watch(searchProvider);
-    String initialDt = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    List<RegistListModel> list = [
+      RegistListModel(
+          '경기 여주 가남읍 본두리'
+          , '당상'
+          , '수'
+          , '서울 마포 망원동'
+          , '당착'
+          , '수'
+          , '40,000'
+          , '04-21 16:28'
+          , '배차완료'
+          , '혼적'
+          , '선/착불'
+          , '0.3톤'
+          , '다마스'
+      ),
+      RegistListModel(
+          '서울 강서 김포공항'
+          , '당상'
+          , '지'
+          , '서울 구로'
+          , '당착'
+          , '지'
+          , '80,000'
+          , '04-21 14:29'
+          , '취소'
+          , '독차'
+          , '인수증'
+          , '5톤'
+          , '윙바디'
+      ),
+    ];
     return Scaffold(
       appBar: AppBar(
         title: const Text('화물등록내역'),
@@ -456,67 +488,302 @@ class RegistListScreen extends ConsumerWidget {
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               padding: EdgeInsets.all(10.sp),
-              itemCount: 10,
+              itemCount: list.length,
               itemBuilder:(BuildContext context, int index) {
-                return Container(
-                  margin: EdgeInsets.fromLTRB(0, 5.h, 0, 5.h),
-                  width: 365.w,
-                  height: 120.h,
-                  decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(10.r)
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          const Text('경기 여주 가남읍 본두리'),
-                          Container(
-                            width: 30.w,
-                          ),
-                          const Text('당상'),
-                          Container(
-                            width: 5.w,
-                          ),
-                          const Text('수')
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Text('서울 마포 망원동'),
-                          Container(
-                            width: 71.w,
-                          ),
-                          const Text('당착'),
-                          Container(
-                            width: 5.w,
-                          ),
-                          const Text('수')
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('40,000원'),
-                          Column(
-                            children: const [
-                              Text('04-21 16:28'),
-                              Text('배차완료')
-                            ],
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: const [
-                          Text('혼적'),
-                          Text('선/착불 운 4.0 + 수 0.0'),
-                          Text('/'),
-                          Text('0.3톤'),
-                          Text('/'),
-                          Text('다마스')
-                        ],
-                      )
-                    ],
+                return InkWell(
+                  onTap: () {
+                    context.pushNamed('registDetail');
+                  },
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(0, 5.h, 0, 5.h),
+                    width: 365.w,
+                    height: 140.h,
+                    decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(10.r)
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(2.sp),
+                              alignment: Alignment.centerLeft,
+                              width: 170.w,
+                              height: 30.h,
+                              child: Text(
+                                list[index].fromAddress ?? '',
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontFamily: "NanumGothic",
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 30.w,
+                              height: 30.h,
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(2.sp),
+                              alignment: Alignment.center,
+                              width: 30.w,
+                              height: 30.h,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(5.r)
+                                  ),
+                                  color: Colors.indigo
+                              ),
+                              child: Text(
+                                list[index].fromDate ?? '',
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontFamily: "NanumGothic",
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(2.sp),
+                              alignment: Alignment.center,
+                              width: 20.w,
+                              height: 30.h,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(5.r)
+                                  ),
+                                  color: list[index].fromStatus == '수' ? Colors.amber : Colors.orange
+                              ),
+                              child: Text(
+                                list[index].fromStatus ?? '',
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontFamily: "NanumGothic",
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(2.sp),
+                              alignment: Alignment.centerLeft,
+                              width: 170.w,
+                              height: 30.h,
+                              child: Text(
+                                list[index].toAddress ?? '',
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontFamily: "NanumGothic",
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 30.w,
+                              height: 30.h,
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(2.sp),
+                              alignment: Alignment.center,
+                              width: 30.w,
+                              height: 30.h,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(5.r)
+                                  ),
+                                  color: Colors.indigo
+                              ),
+                              child: Text(
+                                list[index].toDate ?? '',
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontFamily: "NanumGothic",
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(2.sp),
+                              alignment: Alignment.center,
+                              width: 20.w,
+                              height: 30.h,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(5.r)
+                                  ),
+                                  color: list[index].toStatus == '수' ? Colors.amber : Colors.orange
+                              ),
+                              child: Text(
+                                list[index].toStatus ?? '',
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontFamily: "NanumGothic",
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(2.sp),
+                              alignment: Alignment.centerRight,
+                              width: 80.w,
+                              height: 30.h,
+                              child: Text(
+                                list[index].accessTime ?? '',
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontFamily: "NanumGothic",
+                                    color: Colors.black
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(2.sp),
+                              alignment: Alignment.centerRight,
+                              width: 265.w,
+                              height: 30.h,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    list[index].totalFee ?? '',
+                                    style: TextStyle(
+                                        fontSize: 15.sp,
+                                        fontFamily: "NanumGothic",
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.red
+                                    ),
+                                  ),
+                                  Text(
+                                    '원',
+                                    style: TextStyle(
+                                        fontSize: 15.sp,
+                                        fontFamily: "NanumGothic",
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(2.sp),
+                              alignment: Alignment.center,
+                              width: 80.w,
+                              height: 30.h,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(5.r)
+                                  ),
+                                  color: list[index].status == '배차완료' ? Colors.blue : Colors.red
+                              ),
+                              child: Text(
+                                list[index].status ?? '',
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontFamily: "NanumGothic",
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(2.sp),
+                              alignment: Alignment.center,
+                              width: 30.w,
+                              height: 30.h,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(5.r)
+                                  ),
+                                  color: Colors.black
+                              ),
+                              child: Text(
+                                list[index].mixType ?? '',
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontFamily: "NanumGothic",
+                                    fontWeight: FontWeight.w700,
+                                    color: list[index].mixType == '혼적' ? Colors.yellow : Colors.white
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(2.sp),
+                              alignment: Alignment.centerRight,
+                              height: 30.h,
+                              child: Text(
+                                list[index].payMethod ?? '',
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontFamily: "NanumGothic",
+                                    color: Colors.black
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '/',
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  fontFamily: "NanumGothic",
+                                  color: Colors.black
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(2.sp),
+                              alignment: Alignment.centerLeft,
+                              height: 30.h,
+                              child: Text(
+                                list[index].tonType ?? '',
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontFamily: "NanumGothic",
+                                    color: Colors.black
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '/',
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  fontFamily: "NanumGothic",
+                                  color: Colors.black
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(2.sp),
+                              alignment: Alignment.centerLeft,
+                              height: 30.h,
+                              child: Text(
+                                list[index].carType ?? '',
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontFamily: "NanumGothic",
+                                    color: Colors.black
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }

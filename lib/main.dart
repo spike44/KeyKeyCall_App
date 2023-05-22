@@ -22,6 +22,7 @@ import 'package:keykeycall_app/screen/myPage/contractAgreement_screen.dart';
 import 'package:keykeycall_app/screen/myPage/electronicTaxRecv_screen.dart';
 import 'package:keykeycall_app/screen/myPage/electronicTaxSend_screen.dart';
 import 'package:keykeycall_app/screen/myPage/myInfo_screen.dart';
+import 'package:keykeycall_app/screen/myPage/registDetail_screen.dart';
 import 'package:keykeycall_app/screen/myPage/virtualAccount_screen.dart';
 import 'package:keykeycall_app/screen/myPage_screen.dart';
 import 'package:keykeycall_app/screen/customerCenter/orderDetail_screen.dart';
@@ -32,11 +33,13 @@ import 'package:keykeycall_app/screen/splash_screen.dart';
 import 'package:keykeycall_app/state/bottomNavigation_state.dart';
 import 'package:keykeycall_app/state/regist_state.dart';
 import 'package:keykeycall_app/state/search_state.dart';
+import 'package:keykeycall_app/state/tabBar_state.dart';
 import 'package:keykeycall_app/state/user_state.dart';
 import 'package:keykeycall_app/utils/logger.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 final bottomNavigationProvider = StateNotifierProvider<BottomNavigationState, int>((ref) => BottomNavigationState());
+final tabBarProvider = StateNotifierProvider<TabBarState, int>((ref) => TabBarState());
 final userProvider = StateNotifierProvider<UserStateNotifier, USerModel?>((ref) => UserStateNotifier());
 final searchProvider = StateNotifierProvider<SearchStateNotifier, SearchModel?>((ref) => SearchStateNotifier());
 final registProvider = StateNotifierProvider<RegistStateNotifier, RegistModel?>((ref) => RegistStateNotifier());
@@ -169,6 +172,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 path: 'registList',
                 builder: (BuildContext context, GoRouterState state) {
                   return const RegistListScreen();
+                },
+              ),
+              GoRoute(
+                name: 'registDetail',
+                path: 'registDetail',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const RegistDetailScreen();
                 },
               ),
               GoRoute(
